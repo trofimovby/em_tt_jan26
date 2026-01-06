@@ -405,7 +405,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Alexander Trofimov**  
 Full-stack Python Developer  
-[GitHub](https://github.com/yourusername) | [LinkedIn](https://linkedin.com/in/yourprofile)
+[GitHub](https://github.com/trofimovby) | [LinkedIn](https://linkedin.com/in/trofimovby)
 
 ---
 
