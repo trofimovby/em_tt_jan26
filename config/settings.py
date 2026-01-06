@@ -31,26 +31,40 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'drf_spectacular',
+    'corsheaders',
     'core',
 ]
 
+REST_FRAMEWORK = {
+    # Указываем схему для документации
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'My Cool Order API',
+    'DESCRIPTION': 'API with Custom RBAC & JWT',
+    'VERSION': '1.0.0',
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+    # 'django.middleware.csrf.CsrfViewMiddleware',
 
+    # 'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'core.middleware.JWTAuthenticationMiddleware',  # <--- ДОЛЖНО БЫТЬ АКТИВНО
+
+]
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
@@ -122,3 +136,4 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+CORS_ALLOW_ALL_ORIGINS = True

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order System Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; padding-top: 50px; }
+        .card { box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        #dashboard { display: none; } /* Скрываем панель до логина */
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <div id="login-section" class="card p-4">
+                <h3 class="text-center mb-4">🔐 Вход в систему</h3>
+                <div class="mb-3">
+                    <label>Email</label>
+                    <input type="email" id="email" class="form-control" value="admin@example.com">
+                </div>
+                <div class="mb-3">
+                    <label>Пароль</label>
+                    <input type="password" id="password" class="form-control" value="admin123">
+                </div>
+                <button onclick="login()" class="btn btn-primary w-100">Войти</button>
+                <div id="login-error" class="text-danger mt-2 text-center"></div>
+            </div>
+
+            <div id="dashboard" class="card p-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3>📦 Мои заказы</h3>
+                    <button onclick="logout()" class="btn btn-outline-danger btn-sm">Выход</button>
+                </div>
+
+                <div class="input-group mb-3">
+                    <input type="text" id="order-desc" class="form-control" placeholder="Описание нового заказа">
+                    <button onclick="createOrder()" class="btn btn-success">Создать +</button>
+                </div>
+
+                <ul id="orders-list" class="list-group">
+                    </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    const API_URL = 'http://127.0.0.1:8000/api';
+
+    // 1. ЛОГИН
+    async function login() {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        try {
+            const response = await fetch(`${API_URL}/login/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                // Сохраняем токен в браузере
+                localStorage.setItem('token', data.token);
+                showDashboard();
+                loadOrders();
+            } else {
+                document.getElementById('login-error').innerText = "Ошибка: " + (data.error || 'Неверные данные');
+            }
+        } catch (e) {
+            console.error(e);
+            document.getElementById('login-error').innerText = "Ошибка соединения с сервером";
+        }
+    }
+
+    // 2. ЗАГРУЗКА ЗАКАЗОВ
+    async function loadOrders() {
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_URL}/orders/`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+            const orders = await response.json();
+            const list = document.getElementById('orders-list');
+            list.innerHTML = ''; // Очистка
+
+            orders.forEach(order => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item d-flex justify-content-between align-items-center';
+                li.innerHTML = `
+                    <span><b>#${order.id}</b> ${order.description}</span>
+                    <span class="badge bg-secondary">${order.owner}</span>
+                `;
+                list.appendChild(li);
+            });
+        }
+    }
+
+    // 3. СОЗДАНИЕ ЗАКАЗА
+    async function createOrder() {
+        const desc = document.getElementById('order-desc').value;
+        const token = localStorage.getItem('token');
+
+        const response = await fetch(`${API_URL}/orders/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ description: desc })
+        });
+
+        if (response.ok) {
+            document.getElementById('order-desc').value = ''; // Очистить поле
+            loadOrders(); // Обновить список
+        } else {
+            alert('Ошибка создания заказа');
+        }
+    }
+
+    // УТИЛИТЫ
+    function showDashboard() {
+        document.getElementById('login-section').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+    }
+
+    function logout() {
+        localStorage.removeItem('token');
+        location.reload();
+    }
+
+    // Если уже залогинены при обновлении страницы
+    if (localStorage.getItem('token')) {
+        showDashboard();
+        loadOrders();
+    }
+</script>
+
+</body>
+</html>
