@@ -263,6 +263,7 @@ DATABASE_URL=sqlite:///db.sqlite3
 
 ## 🤝 Развертывание на Production
 
+<<<<<<< HEAD
 ### Подготовка к production
 
 ```bash
@@ -287,6 +288,11 @@ RUN pip install -r requirements.txt
 COPY . .
 CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]
 ```
+=======
+**Alexander Trofimov**  
+Full-stack Python Developer  
+[GitHub](https://github.com/trofimovby) | [LinkedIn](https://linkedin.com/in/trofimovby)
+>>>>>>> 1564ca651ee301f05df44b73b080088e5fbe577a
 
 ---
 
@@ -296,8 +302,13 @@ CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]
 
 ---
 
+<<<<<<< HEAD
 ## 📄 Лицензия
 
 Этот проект лицензирован под лицензией MIT. Подробнее см. в файле `LICENSE`.
 
 ---
+=======
+**Last Updated**: January 2026  
+**Version**: 1.0.0
+>>>>>>> 1564ca651ee301f05df44b73b080088e5fbe577a
