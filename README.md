@@ -263,7 +263,6 @@ DATABASE_URL=sqlite:///db.sqlite3
 
 ## 🤝 Развертывание на Production
 
-<<<<<<< HEAD
 ### Подготовка к production
 
 ```bash
@@ -302,13 +301,4 @@ Full-stack Python Developer
 
 ---
 
-<<<<<<< HEAD
-## 📄 Лицензия
 
-Этот проект лицензирован под лицензией MIT. Подробнее см. в файле `LICENSE`.
-
----
-=======
-**Last Updated**: January 2026  
-**Version**: 1.0.0
->>>>>>> 1564ca651ee301f05df44b73b080088e5fbe577a
