@@ -291,7 +291,7 @@ CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]
 **Alexander Trofimov**  
 Full-stack Python Developer  
 [GitHub](https://github.com/trofimovby) | [LinkedIn](https://linkedin.com/in/trofimovby)
->>>>>>> 1564ca651ee301f05df44b73b080088e5fbe577a
+
 
 ---
 
